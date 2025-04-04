@@ -73,13 +73,13 @@ codeunit 50550 "CodeUnit_KSS"
             salesHeader.Reset();
             salesHeader.SetRange("Document Type", salesHeader."Document Type"::Order);
 
-            salesHeader.SetRange("No.", SalesLine."Document No.");
+            salesHeader.Get(SalesLine."Document Type", SalesLine."Document No.");
+            // Message(salesHeader.SO_HEADER_KSS);
 
-            if salesHeader.FindFirst() then begin
-                if salesHeader.SO_HEADER_KSS <> '' then begin
-                    SalesLine.SO_Line_KSS := salesHeader.SO_HEADER_KSS;
-                end;
+            if salesHeader.SO_HEADER_KSS <> '' then begin
+                SalesLine.SO_Line_KSS := salesHeader.SO_HEADER_KSS;
             end;
+
         end;
     end;
 
