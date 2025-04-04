@@ -69,20 +69,21 @@ codeunit 50550 "CodeUnit_KSS"
     var
         salesHeader: Record "Sales Header";
     begin
-        Message('Line Inserted is: %1', SalesLine."No.");
-        salesHeader.Reset();
-        salesHeader.SetRange("Document Type", salesHeader."Document Type"::Order);
+        if SalesLine.Type = SalesLine.Type::Item then begin
+            salesHeader.Reset();
+            salesHeader.SetRange("Document Type", salesHeader."Document Type"::Order);
 
-        salesHeader.SetRange("No.", SalesLine."Document No.");
-        if salesHeader.IsEmpty then
-            Message('Empty Sales Header');
-        if salesHeader.SO_HEADER_KSS <> '' then begin
-            SalesLine.SO_Line_KSS := salesHeader.SO_HEADER_KSS;
-            Message('Line- %1', SalesLine.SO_Line_KSS);
-            Message('Header- %1', salesHeader.SO_HEADER_KSS);
-            SalesLine.Modify(true);
+            salesHeader.SetRange("No.", SalesLine."Document No.");
+
+            if salesHeader.FindFirst() then begin
+                if salesHeader.SO_HEADER_KSS <> '' then begin
+                    SalesLine.SO_Line_KSS := salesHeader.SO_HEADER_KSS;
+                end;
+            end;
         end;
     end;
+
+
 
 
 }
